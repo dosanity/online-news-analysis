@@ -7,14 +7,14 @@ This dataset was first used in the following conference paper:
 K. Fernandes, P. Vinagre and P. Cortez. A Proactive Intelligent Decision Support System for Predicting the Popularity of Online News. *Proceedings of the 17th EPIA 2015 - Portuguese Conference on Artificial Intelligence* (2015).
 
 The dataset contains variables describing 39,644 articles published between January 7, 2013 and January 7, 2015 on the news website, [Mashable](http://mashable.com/). 
-There are 61 variables associated with each article. Of these, 58 are *predictor* variables, 2 are variables that we will not use (url and timedelta), and finally the number of shares of each article. The number of shares is what we will use to define whether or not the article was *popular*, which is what we will try to predict. You should read about the predictor variables in the file *OnlineNewsPopularity.names*. Further details about the collection and processing of the articles can be found in the conference paper. 
+There are 61 variables associated with each article. Of these, 58 are *predictor* variables, 2 are variables that we will not use (url and timedelta), and finally the number of shares of each article. The number of shares is what we will use to define whether the article was *popular*, which is what we will try to predict. You should read about the predictor variables in the file *OnlineNewsPopularity.names*. Further details about the collection and processing of the articles can be found in the conference paper. 
 
 ## Classification Tools
 
 ### Classification using K-NN
-The K-nearest neighbors (K-NN) algorithm is a simple, easy-to-implement supervised machine learning algorithm that can be used to solve both classification and regression problems. It categories unknown variables into different clusters. In our study, we will try out different values to choose the value of K. Low values of K can be noisy and subject the effects of outliers. Large values of K smooth over things, but you don't want K to be so large that a category with only a few samples in it will always be out voted by other categories. We will be using training data, data used for initial clustering (data where we know the categories in advance) to calculate the accuracy of the data.
+The K-nearest neighbors (K-NN) algorithm is a simple, easy-to-implement supervised machine learning algorithm that can be used to solve both classification and regression problems. It categorizes unknown variables into different clusters. In our study, we will try out different values to choose the value of K. Low values of K can be noisy and subject to the effects of outliers. Large values of K smooth over things, but you don't want K to be so large that a category with only a few samples in it will always be outvoted by other categories. We will be using training data, data used for initial clustering (data where we know the categories in advance) to calculate the accuracy of the data.
 
-We develop a K-NN classification model for the data and use cross validation to choose the best value of K. Using the Train Test Split validation procedure (code below) with a test size of 0.8, we check K values from 1 to 100:
+We develop a K-NN classification model for the data and use cross-validation to choose the best value of K. Using the Train Test Split validation procedure (code below) with a test size of 0.8, we check K values from 1 to 100:
 
 ```
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1, test_size=0.8)
@@ -56,9 +56,9 @@ accuracy = metrics.accuracy_score(y_true=y_test, y_pred=y_pred)
 From the results, we conclude that the best accuracy one can obtain from the test data is around 0.567 with k = 93.
 
 ### Classification using SVM
-We now develop a support-vector machine classification model for the data. In machine learning, support-vector machines (SVMs, also support-vector networks) are supervised learning models with associated learning algorithms that analyze data for classification and regression analysis. It uses the support-vector classifier which splits the data with a soft margin (the distance between the observations and the threshold) and some misclassifications. 
+We now develop a support-vector machine classification model for the data. In machine learning, support vector machines (SVMs, also support-vector networks) are supervised learning models with associated learning algorithms that analyze data for classification and regression analysis. It uses the support-vector classifier which splits the data with a soft margin (the distance between the observations and the threshold) and some misclassifications. 
 
-Using Train Test Split validation procedure, we can narrow down the C values to see which C value has the highest accuracy.
+Using the Train Test Split validation procedure, we can narrow down the C values to see which C value has the highest accuracy.
 
 ```
 X_train, X_test, y_train, y_test = train_test_split(X_first, y_first, random_state=1, test_size=0.8)
@@ -117,13 +117,13 @@ for C in C_range:
 From the results, we conclude that the best accuracy one can obtain from the test data is around 0.58175 with C = 8106.
 
 ### Classification using Decision Trees
-A classification tree is a structural mapping of binary decisions that lead to a decision about the class (interpretation) of an object. The top of the tree is the Root Node (The Root) which leads to Internal Nodes (Branches). These have arrows pointing to them and arrows pointing away from them. Finally, the bottom of the decision tree are called Leaf Nodes (Leaves). It is a non-parametric supervised learning method used for classification and regression.
+A classification tree is a structural mapping of binary decisions that lead to a decision about the class (interpretation) of an object. The top of the tree is the Root Node (The Root) which leads to Internal Nodes (Branches). These have arrows pointing to them and arrows pointing away from them. Finally, the bottom of the decision tree is called Leaf Nodes (Leaves). It is a non-parametric supervised learning method used for classification and regression.
 
 To check which values will result in the highest accuracy, we will check the maximum depths: `[5, 10, 15, 20]` and the minimum sample split: `[10, 100, 200, 400, 800]`. The results are shown below:
 
 ![DecisionTree-Accuracy](https://user-images.githubusercontent.com/29410712/180119785-e7e20abe-595a-43c7-b09e-025e8391820a.png)
 
-From our calculations, we can see that the maximum depth of 10 and the minimum sample split of 400 will give us the highest accuracy. Therefore we will create a decision tree with these values.
+From our calculations, we can see that the maximum depth of 10 and the minimum sample split of 400 will give us the highest accuracy. Therefore, we will create a decision tree with these values.
 
 ```
 Accuracy on training data = 0.6657249520734537
@@ -134,5 +134,4 @@ Accuracy on test data = 0.6377762082534557
 
 ## Results
 
-Based on all the accuracies, the Decision Tree worked best with the highest accuracy achieved for the Test Data of 0.6377. For the K-NN classifier, the parameter K can infuence the accuracy. Choosing smaller values for K can be noisy and will have a higher influence on the result while larger values of K will have smoother decision boundaries which mean lower variance but increased bias. For the SVM classifier, a larger C decreases the final training error, but if you increase C too much you risk losing the generalization properties of the classifier because it will try to fit as best as possible all the training points. If C is small, then the classifier is flat. For Decision Trees, there is a risk of overfitting when the number is higher. All three have a certain "sweet spot" where the accuracy is maximized. The model that is the easiest to interpret is the Decision Tree model because the information can be expressed in a readable form. In the K-NN model, the test is accurate about 0.567 of the time. In the SVM model, the test is accurate about 0.581 of the time. In the Decision Tree, the test is accurate about 0.638 of the time.
-
+Based on all the accuracies, the Decision Tree worked best with the highest accuracy achieved for the Test Data of 0.6377. For the K-NN classifier, the parameter K can influence the accuracy. Choosing smaller values for K can be noisy and will have a higher influence on the result while larger values of K will have smoother decision boundaries which mean lower variance but increased bias. For the SVM classifier, a larger C decreases the final training error, but if you increase C too much you risk losing the generalization properties of the classifier because it will try to fit as best as possible all the training points. If C is small, then the classifier is flat. For Decision Trees, there is a risk of overfitting when the number is higher. All three have a certain "sweet spot" where the accuracy is maximized. The model that is the easiest to interpret is the Decision Tree model because the information can be expressed in a readable form. In the K-NN model, the test is accurate about 0.567 of the time. In the SVM model, the test is accurate about 0.581 of the time. In the Decision Tree, the test is accurate about 0.638 of the time.
